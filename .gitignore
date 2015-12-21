@@ -41,3 +41,21 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Android studio project
+.gradle
+/local.properties
+/.idea
+#/.idea/workspace.xml
+#/.idea/libraries
+.DS_Store
+/build
+/captures
+/util
+*.iml
+/gradle
+gradle.*
+gradlew
+*.bat
+/build.gradle
+/settings.gradle

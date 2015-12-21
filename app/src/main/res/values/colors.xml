@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#B0171F</color>
+    <color name="colorPrimaryDark">#B0171F</color>
+    <!--<color name="colorPrimaryDark">#A7171F</color>-->
+    <color name="green">#3f9976</color>
+    <color name="greenDark">#368264</color>
+    <color name="greenLight">#53ad8a</color>
+    <color name="black">#000000</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <!-- EditText main page -->
+    <color name="EditTextMainColor1">#c5c5c5</color>
+    <color name="EditTextMainColor2">#444444</color>
+    <color name="EditTextMainColor3">#444444</color>
+    <color name="greyLight">#EEEEEE</color>
+</resources>

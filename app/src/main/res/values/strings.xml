@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">HTTP Request</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="remove_link">remove</string>
+    <string name="process">process</string>
+    <string name="add_parameters">param</string>
+    <string name="url_hint">http://</string>
+    <string name="param_hint">parameter</string>
+    <string name="value_hint">value</string>
+    <string name="json_checkbox">json</string>
+    <string name="referer_hint">referer</string>
+    <string name="error">error</string>
+    <string name="save">save</string>
+    <string name="request_save">This request has been saved</string>
+    <string name="saved_requests_loaded">saved requests loaded</string>
+    <string name="json_error">Json error</string>
+    <string name="read_file_error">Read file error</string>
+    <string name="save_file_error">Save file error</string>
+    <string name="back_button_to_exit">Tap back button in order to exit</string>
+    <string name="text">Text</string>
+    <string name="image">Image</string>
+    <string-array name="http_verbs">
+        <item>GET</item>
+        <item>POST</item>
+        <item>HEAD</item>
+        <item>OPTIONS</item>
+        <item>PUT</item>
+        <item>DELETE</item>
+        <item>TRACE</item>
+        <item>PATCH</item>
+    </string-array>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/param"
+        android:hint="@string/param_hint"
+        android:singleLine="true"
+        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/value"
+        android:hint="@string/value_hint"
+        android:singleLine="true"
+        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/removeParamButton"
+        android:text="@string/remove_link"
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
