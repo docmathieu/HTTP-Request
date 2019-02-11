@@ -82,7 +82,7 @@ public class FileController extends AsyncTask<ArrayList<Request>, Void, String>
                 break;
 
             case METHOD_WRITE:
-                listener.appendCallBack(str);
+                listener.messageCallBack(str);
                 break;
         }
     }
@@ -113,7 +113,7 @@ public class FileController extends AsyncTask<ArrayList<Request>, Void, String>
                 }
                 //returnMessage += writeMessage(fullMessage);                   // TEST WRITE
                 writeMessage(fullMessage);
-                returnMessage += context.getString(R.string.request_save);
+                returnMessage = context.getString(R.string.request_save);
                 break;
         }
 

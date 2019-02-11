@@ -13,7 +13,9 @@ import com.docm.httprequest.fragment.FragmentText;
  */
 public class OutputController
 {
-    TabLayout tabLayout;
+    static TabLayout tabLayout;
+
+    private String eol = System.getProperty("line.separator");
 
     /**
      * Constructor.
@@ -28,7 +30,7 @@ public class OutputController
      *
      * @param nb 0:text 1:image
      */
-    public void swap(int nb)
+    public static void swap(int nb)
     {
         TabLayout.Tab tab = tabLayout.getTabAt(nb);
         if (tab != null) tab.select();
@@ -36,12 +38,13 @@ public class OutputController
 
     /**
      * Trace in resultText
+     * Hack: Fragment does not show the message if it is on a single line, so we add eol
      *
-     *  @param message String
+     * @param message String
      */
     public void trace(String message)
     {
-        FragmentText.setText(message);
+        FragmentText.setText(message + eol);
         swap(0);
     }
 

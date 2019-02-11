@@ -3,6 +3,7 @@ package com.docm.httprequest.controller;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import com.docm.httprequest.imodel.CallBack;
 import com.docm.httprequest.model.Request;
@@ -80,16 +81,17 @@ public class HttpController extends AsyncTask<Request, Void, String>
         if ((!dataUrl.startsWith("http://")) && (!dataUrl.startsWith("https://")))
             dataUrl = "http://" + dataUrl;
 
+        String mimeType = request.getMimeType();
         String referer = request.getReferer();
+        String login = request.getLogin();
+        String password = request.getPassword();
 
         try {
             // Create connection
+
+            // !(POST, PUT, PATCH)
             if (!request.getVerb().sendBody()){
-                if (request.getJsonMode()){
-                    dataUrl = dataUrl + "?json=" + request.getParamsJson();
-                }else{
-                    dataUrl = dataUrl + "?" + request.getParamsQuery();
-                }
+                dataUrl = dataUrl + "?" + request.getParamsQuery();
             }
 
             URL url = new URL(dataUrl);
@@ -98,38 +100,57 @@ public class HttpController extends AsyncTask<Request, Void, String>
             connection.setConnectTimeout(TIMEOUT_VALUE);
             connection.setRequestMethod(request.getVerb().toString());
             connection.setUseCaches(false);
-            if (referer.length() > 0) connection.setRequestProperty("Referer", request.getReferer());
-            if (request.getJsonMode()) connection.setRequestProperty("Content-Type", "application/json");
+            if (mimeType.length() > 0) connection.setRequestProperty("Content-Type", mimeType);
+            if (referer.length() > 0) connection.setRequestProperty("Referer", referer);
+
+            // Authorization, basic authentication
+            if (login.length() > 0){
+                String loginPassword = login + ":" + password;
+                String basicAuth = "Basic " + Base64.encodeToString(loginPassword.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty ("Authorization", basicAuth);
+            }
+
             connection.setDoInput(true);
+
+            // (POST, PUT, PATCH)
             if (request.getVerb().sendBody()){
                 connection.setDoOutput(true);
                 OutputStream outputStream = connection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                if (request.getJsonMode()){
-                    writer.write(request.getParamsJson());
-                }else{
-                    writer.write(request.getParamsQuery());
-                }
+                writer.write(request.getParamsQuery());
                 writer.flush();
                 writer.close();
             }
 
-            // Get Response
-            InputStream is = connection.getInputStream();
-            if (getImageType(connection)){
-                bitmap = BitmapFactory.decodeStream(is);
-                return "";
+            // Response
+            int statusCode = connection.getResponseCode();
+            InputStream is = null;
+            StringBuilder response = new StringBuilder();
+            response.append("HTTP status: " + statusCode);
+            response.append('\n');
+
+            if (statusCode < HttpURLConnection.HTTP_BAD_REQUEST){
+                // Response ok
+                is = connection.getInputStream();
+                if (getImageType(connection)){
+                    bitmap = BitmapFactory.decodeStream(is);
+                    return "";
+                }
+            }else{
+                // Response error
+                is = connection.getErrorStream();
+
             }
 
+            // Trace response
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             String line;
-            StringBuilder response = new StringBuilder();
-
             while ((line = rd.readLine()) != null) {
                 response.append(line);
                 response.append('\n');
             }
             rd.close();
+
             responseStr = response.toString();
 
         } catch (Exception e) {

@@ -5,14 +5,21 @@
     <string name="remove_link">remove</string>
     <string name="process">process</string>
     <string name="add_parameters">param</string>
-    <string name="url_hint">http://</string>
+    <string name="more">more</string>
+    <string name="less">less</string>
+    <string name="request_name_hint">request name</string>
+    <string name="url_hint">http(s)://</string>
     <string name="param_hint">parameter</string>
     <string name="value_hint">value</string>
     <string name="json_checkbox">json</string>
     <string name="referer_hint">referer</string>
+    <string name="mime_hint">mime type (ex: application/json)</string>
+    <string name="login_hint">login</string>
+    <string name="password_hint">password</string>
+    <string name="mime_hint_short">mime</string>
     <string name="error">error</string>
     <string name="save">save</string>
-    <string name="request_save">This request has been saved</string>
+    <string name="request_save">Requests saved</string>
     <string name="saved_requests_loaded">saved requests loaded</string>
     <string name="json_error">Json error</string>
     <string name="read_file_error">Read file error</string>
@@ -20,6 +27,7 @@
     <string name="back_button_to_exit">Tap back button in order to exit</string>
     <string name="text">Text</string>
     <string name="image">Image</string>
+    <string name="loading">Loading...</string>
     <string-array name="http_verbs">
         <item>GET</item>
         <item>POST</item>

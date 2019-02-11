@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -47,17 +48,24 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements CallBack
 {
-    private Activity mainActivity;
-    private CallBack self;
+    public static Activity mainActivity;
+    public static CallBack self;
 
     private OutputController outputController;
 
     private LinearLayout parametersLayout;
+    private TabLayout tabLayout;
+    private EditText requestName;
     private EditText url;
     private Spinner verbSelect;
-    private CheckBox jsonCheckBox;
+
+    private EditText mimeType;
     private EditText refererEditText;
-    private LinearLayout linkList;
+    private EditText loginEditText;
+    private EditText passwordEditText;
+    private static LinearLayout linkList;
+    private LinearLayout moreBlock;
+    private Button moreButton;
 
     private Context linkContext;
 
@@ -168,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements CallBack
         viewPager.setAdapter(pagerAdapter);
 
         // Setup the Tabs
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         // By using this method the tabs will be populated according to viewPager's count and
         // with the name from the pagerAdapter getPageTitle()
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
@@ -181,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements CallBack
      */
     protected void initControllers()
     {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         outputController = new OutputController(tabLayout);
 
         // First saved requests load
@@ -202,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements CallBack
         // Process Button
         Button processButton = (Button) findViewById(R.id.processButton);
         processButton.setOnClickListener(processClick);
+        // More / Less Button
+        Button moreButton = (Button) findViewById(R.id.moreButton);
+        moreButton.setOnClickListener(moreClick);
         // Save Button
         Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(saveClick);
@@ -213,12 +223,18 @@ public class MainActivity extends AppCompatActivity implements CallBack
     protected void initUIComponents()
     {
         parametersLayout = (LinearLayout) findViewById(R.id.parametersLayout);
+        requestName = (EditText) findViewById(R.id.requestNameEditText);
         url = (EditText) findViewById(R.id.urlEditText);
         verbSelect = (Spinner) findViewById(R.id.verbSelect);
-        jsonCheckBox = (CheckBox) findViewById(R.id.jsonCheckBox);
+        //jsonCheckBox = (CheckBox) findViewById(R.id.jsonCheckBox);
+        mimeType = (EditText) findViewById(R.id.mimeTypeEditText);
         refererEditText = (EditText) findViewById(R.id.refererEditText);
+        loginEditText = (EditText) findViewById(R.id.loginEditText);
+        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         linkList = (LinearLayout) findViewById(R.id.linkList);
         linkContext = linkList.getContext();
+        moreBlock = (LinearLayout) findViewById(R.id.moreBlock);
+        moreButton = (Button) findViewById(R.id.moreButton);
     }
 
     /**
@@ -264,18 +280,42 @@ public class MainActivity extends AppCompatActivity implements CallBack
         public void onClick(View view)
         {
             Request request = fillNewRequest();
-
-            try {
-                outputController.trace(request.getJson().toString(4));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            outputController.trace(getString(R.string.loading));
             HttpController httpController = new HttpController();
             httpController.setListener(self);
             httpController.execute(request);
         }
     };
+
+    /**
+     *  More click
+     */
+    private View.OnClickListener moreClick = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {
+            if (moreBlock.getVisibility() == View.GONE){
+                moreSetVisibility(true);
+            }else{
+                moreSetVisibility(false);
+            }
+        }
+    };
+
+    /**
+     * More visibility choice
+     */
+    private void moreSetVisibility(boolean visible)
+    {
+        if (visible){
+            moreBlock.setVisibility(View.VISIBLE);
+            moreButton.setText(R.string.less);
+        }else{
+            moreBlock.setVisibility(View.GONE);
+            moreButton.setText(R.string.more);
+        }
+    }
 
     /**
      *  Save click
@@ -285,22 +325,23 @@ public class MainActivity extends AppCompatActivity implements CallBack
         @Override
         public void onClick(View view)
         {
+            outputController.trace(getString(R.string.loading));
             Request request = fillNewRequest();
-
             setNewSaveRequest(request);
-
-            try {
-                outputController.trace(request.getJson().toString(4) + "\n");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            FileController fileController = new FileController(mainActivity);
-            fileController.setListener(self);
-            fileController.setMethod(FileController.METHOD_WRITE);
-            fileController.execute(getAllSavedRequests());
+            saveAllRequests();
         }
     };
+
+    /**
+     * Save only
+     */
+    public static void saveAllRequests()
+    {
+        FileController fileController = new FileController(mainActivity);
+        fileController.setListener(self);
+        fileController.setMethod(FileController.METHOD_WRITE);
+        fileController.execute(getAllSavedRequests());
+    }
 
     /**
      *  Set new save request on left panel
@@ -320,7 +361,8 @@ public class MainActivity extends AppCompatActivity implements CallBack
      *
      *  @return ArrayList<Request>
      */
-    private ArrayList<Request> getAllSavedRequests()
+    //private ArrayList<Request> getAllSavedRequests()
+    private static ArrayList<Request> getAllSavedRequests()
     {
         ArrayList<Request> requests = new ArrayList<>();
         int length = linkList.getChildCount();
@@ -343,11 +385,14 @@ public class MainActivity extends AppCompatActivity implements CallBack
     public Request fillNewRequest()
     {
         Request request = new Request();
+
+        request.setRequestName(requestName.getText().toString());
         request.setUrl(url.getText().toString());
         request.setVerb((Verb) verbSelect.getSelectedItem());
-        request.setJsonMode(jsonCheckBox.isChecked());
+        request.setMimeType(mimeType.getText().toString());
         request.setReferer(refererEditText.getText().toString());
-
+        request.setLogin(loginEditText.getText().toString());
+        request.setPassword(passwordEditText.getText().toString());
         int length = parametersLayout.getChildCount();
         for (int i=0; i<length; i++){
             View child = parametersLayout.getChildAt(i);
@@ -367,11 +412,14 @@ public class MainActivity extends AppCompatActivity implements CallBack
      */
     public void clearContent()
     {
+        requestName.setText("");
         url.setText("");
         //verbSelect.setId(0);
         verbSelect.setSelection(0);
-        jsonCheckBox.setChecked(false);
+        mimeType.setText("");
         refererEditText.setText("");
+        loginEditText.setText("");
+        passwordEditText.setText("");
         parametersLayout.removeAllViews();
         outputController.clear();
     }
@@ -383,12 +431,17 @@ public class MainActivity extends AppCompatActivity implements CallBack
      */
     public void fillContentWithRequest(Request request)
     {
-        clearContent();
+        // Mask 'more' block
+        moreSetVisibility(false);
 
+        clearContent();
+        requestName.setText(request.getRequestName());
         url.setText(request.getUrl());
         verbSelect.setSelection(request.getVerb().getPosition());
-        jsonCheckBox.setChecked(request.getJsonMode());
+        mimeType.setText(request.getMimeType());
         refererEditText.setText(request.getReferer());
+        loginEditText.setText(request.getLogin());
+        passwordEditText.setText(request.getPassword());
 
         List<Parameter> list = request.getParams();
         int length = list.size();

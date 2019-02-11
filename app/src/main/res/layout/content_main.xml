@@ -33,21 +33,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <EditText
+                    android:text=""
+                    android:id="@+id/requestNameEditText"
+                    android:theme="@style/whiteTheme"
+                    android:hint="@string/request_name_hint"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:inputType="text" />
+
+                <EditText
+                    android:text=""
+                    android:id="@+id/urlEditText"
+                    android:theme="@style/whiteTheme"
+                    android:hint="@string/url_hint"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:inputType="textUri" />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
-                        android:text=""
-                        android:id="@+id/urlEditText"
-                        android:theme="@style/whiteTheme"
-                        android:hint="@string/url_hint"
-                        android:singleLine="true"
-                        android:layout_weight="8"
-                        android:layout_width="0dp"
-                        android:inputType="textUri"
-                        android:layout_height="wrap_content" />
                     <Spinner
                         android:id="@+id/verbSelect"
                         android:layout_weight="6"
@@ -57,30 +69,15 @@
                         android:spinnerMode="dropdown"
                         />
 
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/refererEditText"
-                        android:theme="@style/whiteTheme"
-                        android:hint="@string/referer_hint"
-                        android:singleLine="true"
-                        android:layout_weight="8"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
-                    <CheckBox
-                        android:text="@string/json_checkbox"
-                        android:theme="@style/whiteTheme"
-                        android:id="@+id/jsonCheckBox"
+                    <Button
+                        android:id="@+id/processButton"
                         android:layout_weight="6"
+                        android:text="@string/process"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
 
-
                 </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -93,18 +90,131 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
                     <Button
+                        android:id="@+id/moreButton"
+                        android:layout_weight="4"
+                        android:text="@string/more"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                    <Button
                         android:id="@+id/saveButton"
                         android:layout_weight="4"
                         android:text="@string/save"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
-                    <Button
-                        android:id="@+id/processButton"
-                        android:layout_weight="6"
-                        android:text="@string/process"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
+
+                <!-- this block is hidden by default -->
+                <LinearLayout
+                    android:id="@+id/moreBlock"
+                    android:orientation="vertical"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <!-- Mime Type -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:inputType="none"
+                            android:text="@string/mime_hint_short"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="right"
+                            android:background="@android:color/transparent"
+                            />
+
+                        <EditText
+                            android:id="@+id/mimeTypeEditText"
+                            android:theme="@style/whiteTheme"
+                            android:hint="@string/mime_hint"
+                            android:singleLine="true"
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+                    <!-- Referer -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:inputType="none"
+                            android:text="@string/referer_hint"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="right"
+                            android:background="@android:color/transparent"
+                            />
+
+                        <EditText
+                            android:id="@+id/refererEditText"
+                            android:theme="@style/whiteTheme"
+                            android:singleLine="true"
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <!-- Login -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:inputType="none"
+                            android:text="@string/login_hint"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="right"
+                            android:background="@android:color/transparent"
+                            />
+
+                        <EditText
+                            android:id="@+id/loginEditText"
+                            android:theme="@style/whiteTheme"
+                            android:singleLine="true"
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+                    <!-- Password -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:inputType="none"
+                            android:text="@string/password_hint"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="right"
+                            android:background="@android:color/transparent" />
+
+                        <EditText
+                            android:id="@+id/passwordEditText"
+                            android:theme="@style/whiteTheme"
+                            android:singleLine="true"
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="textWebPassword" />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/parametersLayout"
                     android:theme="@style/whiteTheme"
@@ -137,7 +247,6 @@
                             android:layout_height="wrap_content"
                             app:layout_scrollFlags="scroll|enterAlways" />
                     </android.support.design.widget.AppBarLayout>
-
                     <com.docm.httprequest.model.WrappingViewPager
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"

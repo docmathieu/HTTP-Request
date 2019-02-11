@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.docm.httprequest.MainActivity;
 import com.docm.httprequest.R;
 import com.docm.httprequest.imodel.CallBack;
 import com.docm.httprequest.model.Request;
@@ -28,7 +29,7 @@ public class SaveObject extends LinearLayout
     private Context context;
 
     private Button removeButton;
-    private TextView linkText;
+    private TextView nameText;
     private TextView descriptionText;
 
     private Request request;
@@ -63,11 +64,12 @@ public class SaveObject extends LinearLayout
     public void setRequest(Request request)
     {
         this.request = request;
-        linkText.setText(this.request.getUrl());
+        nameText.setText(this.request.getRequestName());
 
         String desc = request.getVerb() + ", " + request.getParams().size() + "p";
-        if (request.getJsonMode()) desc += ", json";
-        if (!"".equals(request.getReferer())) desc += ", ref:" + request.getReferer();
+        if (!"".equals(request.getReferer())) desc += ", ref";
+        if (!"".equals(request.getMimeType())) desc += ", mime";
+        desc = this.request.getUrl() + " (" + desc + ")";
         descriptionText.setText(desc);
     }
 
@@ -107,7 +109,7 @@ public class SaveObject extends LinearLayout
     {
         this.self = this;
         this.context = context;
-        String linkText = "";
+        String nameText = "";
 
         if (attrs != null){
             TypedArray typeArray = context.getTheme().obtainStyledAttributes(
@@ -117,15 +119,15 @@ public class SaveObject extends LinearLayout
                     0
             );
             try {
-                linkText = typeArray.getString(R.styleable.SaveObject_url);
+                nameText = typeArray.getString(R.styleable.SaveObject_url);
             } finally {
                 typeArray.recycle();
             }
         }
 
         LayoutInflater.from(context).inflate(R.layout.save_object, this);
-        TextView textView = (TextView) this.findViewById(R.id.linkText);
-        textView.setText(linkText);
+        TextView textView = (TextView) this.findViewById(R.id.nameText);
+        textView.setText(nameText);
 
         initListeners();
     }
@@ -138,9 +140,9 @@ public class SaveObject extends LinearLayout
         removeButton = (Button) findViewById(R.id.removeParamButton);
         removeButton.setOnClickListener(removeClick);
 
-        linkText = (TextView) findViewById(R.id.linkText);
+        nameText = (TextView) findViewById(R.id.nameText);
         descriptionText = (TextView) findViewById(R.id.descriptionText);
-        //linkText.setOnClickListener(linkClick);
+        //nameText.setOnClickListener(linkClick);
 
         LinearLayout clickZone = (LinearLayout) findViewById(R.id.clickZone);
         clickZone.setOnClickListener(linkClick);
@@ -208,6 +210,8 @@ public class SaveObject extends LinearLayout
                     removeButton.setOnClickListener(null);
                     LinearLayout container = (LinearLayout) self.getParent();
                     container.removeView(self);
+                    // Save the change !
+                    MainActivity.saveAllRequests();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
