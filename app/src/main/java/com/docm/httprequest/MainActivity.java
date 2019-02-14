@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -50,15 +51,12 @@ public class MainActivity extends AppCompatActivity implements CallBack
 {
     public static Activity mainActivity;
     public static CallBack self;
-
     private OutputController outputController;
-
     private LinearLayout parametersLayout;
     private TabLayout tabLayout;
     private EditText requestName;
     private EditText url;
     private Spinner verbSelect;
-
     private EditText mimeType;
     private EditText refererEditText;
     private EditText loginEditText;
@@ -66,8 +64,13 @@ public class MainActivity extends AppCompatActivity implements CallBack
     private static LinearLayout linkList;
     private LinearLayout moreBlock;
     private Button moreButton;
-
     private Context linkContext;
+
+    // VavigationView
+    private NavigationView navigationView;
+    private View headerLayout;
+    private TextView versionTextView;
+
 
     /**
      * Activity creation
@@ -87,15 +90,15 @@ public class MainActivity extends AppCompatActivity implements CallBack
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        setVersion();
         initTabs();
         initDropDown();
         initControllers();
         initListeners();
         initUIComponents();
+        setVersion();
     }
 
     /**
@@ -159,8 +162,6 @@ public class MainActivity extends AppCompatActivity implements CallBack
         }
 
         String appName = getString(R.string.app_name);
-
-        TextView versionTextView = (TextView) findViewById(R.id.versionText);
         String versionText = appName + " v" + pInfo.versionName;
         versionTextView.setText(versionText);
     }
@@ -179,7 +180,10 @@ public class MainActivity extends AppCompatActivity implements CallBack
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         // By using this method the tabs will be populated according to viewPager's count and
         // with the name from the pagerAdapter getPageTitle()
-        tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+
+        // Deprecated, use setupWithViewPager only
+        //tabLayout.setTabsFromPagerAdapter(pagerAdapter);
+
         // This method ensures that tab selection events update the ViewPager and page changes update the selected tab.
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -231,10 +235,15 @@ public class MainActivity extends AppCompatActivity implements CallBack
         refererEditText = (EditText) findViewById(R.id.refererEditText);
         loginEditText = (EditText) findViewById(R.id.loginEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
-        linkList = (LinearLayout) findViewById(R.id.linkList);
-        linkContext = linkList.getContext();
         moreBlock = (LinearLayout) findViewById(R.id.moreBlock);
         moreButton = (Button) findViewById(R.id.moreButton);
+
+        // Navigation view
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        headerLayout = navigationView.getHeaderView(0);
+        versionTextView = (TextView) headerLayout.findViewById(R.id.versionText);
+        linkList = (LinearLayout) headerLayout.findViewById(R.id.linkList);
+        linkContext = linkList.getContext();
     }
 
     /**
