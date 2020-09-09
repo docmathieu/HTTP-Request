@@ -4,22 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.graphics.Color;
+
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -36,8 +37,6 @@ import com.docm.httprequest.model.Request;
 import com.docm.httprequest.model.Verb;
 import com.docm.httprequest.object.ParameterObject;
 import com.docm.httprequest.object.SaveObject;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +69,9 @@ public class MainActivity extends AppCompatActivity implements CallBack
     private NavigationView navigationView;
     private View headerLayout;
     private TextView versionTextView;
-
+    private TextView playMauriacusTextView;
+    private TextView linkFacebookTextView;
+    private TextView linkEmailTextView;
 
     /**
      * Activity creation
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements CallBack
         initListeners();
         initUIComponents();
         setVersion();
+        setupHyperlink();
     }
 
     /**
@@ -164,6 +166,23 @@ public class MainActivity extends AppCompatActivity implements CallBack
         String appName = getString(R.string.app_name);
         String versionText = appName + " v" + pInfo.versionName;
         versionTextView.setText(versionText);
+    }
+
+    /**
+     *  Init hyperlinks (see mauriacus.com)
+     */
+    private void setupHyperlink() {
+        playMauriacusTextView.setTextIsSelectable(false);
+        playMauriacusTextView.setLinkTextColor(getResources().getColor(R.color.blueLink));
+        playMauriacusTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        linkFacebookTextView.setTextIsSelectable(false);
+        linkFacebookTextView.setLinkTextColor(getResources().getColor(R.color.blueLink));
+        linkFacebookTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        linkEmailTextView.setTextIsSelectable(false);
+        linkEmailTextView.setLinkTextColor(getResources().getColor(R.color.blueLink));
+        linkEmailTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**
@@ -242,6 +261,10 @@ public class MainActivity extends AppCompatActivity implements CallBack
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerLayout = navigationView.getHeaderView(0);
         versionTextView = (TextView) headerLayout.findViewById(R.id.versionText);
+        playMauriacusTextView = (TextView) headerLayout.findViewById(R.id.playMauriacusText);
+        linkFacebookTextView = (TextView) headerLayout.findViewById(R.id.linkFacebookText);
+        linkEmailTextView = (TextView) headerLayout.findViewById(R.id.linkEmailText);
+
         linkList = (LinearLayout) headerLayout.findViewById(R.id.linkList);
         linkContext = linkList.getContext();
     }

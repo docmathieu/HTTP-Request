@@ -3,14 +3,13 @@ package com.docm.httprequest.model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * Created by romain on 14/12/2015.
  *
  * This class permit to zoom the image
  */
-public class ResizableImageView extends ImageView {
+public class ResizableImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     public ResizableImageView(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 
+import com.docm.httprequest.R;
 import com.docm.httprequest.imodel.CallBack;
 import com.docm.httprequest.model.Request;
 
@@ -16,6 +17,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Romain Mathieu on 30/10/2015.
@@ -124,10 +127,20 @@ public class HttpController extends AsyncTask<Request, Void, String>
 
             // Response
             int statusCode = connection.getResponseCode();
+
+            // Gets response headers
+            Map<String, List<String>> headers = null;
+            if (statusCode == HttpURLConnection.HTTP_OK) {
+                headers = connection.getHeaderFields();
+            }
+
             InputStream is = null;
             StringBuilder response = new StringBuilder();
-            response.append("HTTP status: " + statusCode);
+
+            response.append("http status: " + statusCode + '\n');
+            response.append("Returned headers:" + '\n' + getReturningHeadersString(headers));
             response.append('\n');
+            response.append("Data:" + "\n");
 
             if (statusCode < HttpURLConnection.HTTP_BAD_REQUEST){
                 // Response ok
@@ -169,6 +182,41 @@ public class HttpController extends AsyncTask<Request, Void, String>
         }
 
         return responseStr;
+    }
+
+    /**
+     * Get String from HTTP request result headers
+     *
+     * @param headers
+     * @return
+     */
+    private String getReturningHeadersString(Map<String, List<String>> headers)
+    {
+        if (headers == null){
+            return "none\n";
+        }
+
+        String result = "";
+
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            List<String> values = entry.getValue();
+            String valuesString = "";
+
+            for (String value : values){
+                if (!"".equals(valuesString)){
+                    valuesString += ", ";
+                }
+                valuesString += value;
+            }
+
+            if (entry.getKey() == null){
+                result += "  " + valuesString + "\n";
+            }else{
+                result += "  " + entry.getKey() + " = " + valuesString + "\n";
+            }
+        }
+
+        return result;
     }
 
     /**

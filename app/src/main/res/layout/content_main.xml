@@ -236,17 +236,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                    <android.support.design.widget.AppBarLayout
+                    <com.google.android.material.appbar.AppBarLayout
                         android:theme="@style/AppTheme.AppBarOverlay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TabLayout
+                        <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tab_layout"
                             app:tabMode="fixed"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_scrollFlags="scroll|enterAlways" />
-                    </android.support.design.widget.AppBarLayout>
+                    </com.google.android.material.appbar.AppBarLayout>
                     <com.docm.httprequest.model.WrappingViewPager
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"

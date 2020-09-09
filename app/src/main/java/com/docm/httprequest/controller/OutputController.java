@@ -1,7 +1,7 @@
 package com.docm.httprequest.controller;
 
 import android.graphics.Bitmap;
-import android.support.design.widget.TabLayout;
+import com.google.android.material.tabs.TabLayout;
 
 import com.docm.httprequest.fragment.FragmentImage;
 import com.docm.httprequest.fragment.FragmentText;

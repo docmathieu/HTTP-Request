@@ -38,4 +38,7 @@
         <item>TRACE</item>
         <item>PATCH</item>
     </string-array>
+    <string name="play_mauriacus_game"><a href="https://mauriacus.com">Play MAURIACUS game</a></string>
+    <string name="link_facebook"><a href="https://www.facebook.com/HTTP-request-106209834558895/">Facebook</a></string>
+    <string name="link_email"><a href="mailto:hicode.sas@gmail.com?subject=HTTP Request">Send email</a></string>
 </resources>

@@ -13,4 +13,5 @@
     <color name="EditTextMainColor2">#444444</color>
     <color name="EditTextMainColor3">#444444</color>
     <color name="greyLight">#EEEEEE</color>
+    <color name="blueLink">#2e1fc9</color>
 </resources>
